@@ -1,0 +1,12 @@
+nav{
+  background-color: #636e72;
+}
+
+nav a {
+  color:#fff
+}
+
+.btn{
+  right: 9%;
+  position: absolute;
+}

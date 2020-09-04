@@ -1,0 +1,112 @@
+<app-header (task)="getAddTaskValue($event)" (viewClose)="getViewClose($event)"></app-header>
+<div class="container" *ngIf="!openTask && !viewCard">
+  <div class="row">
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 float">
+      <div class="drag-container">
+        <div class="section-heading">Backlog</div>
+          <div cdkDropList #Backlog="cdkDropList" class="item-list"
+            [cdkDropListConnectedTo]="[InProcess, Review, Completed]"  
+            (cdkDropListDropped)="onDrop($event)"
+            [cdkDropListData]="backlog">
+            <div class="item-box" *ngFor="let b of backlog" cdkDrag>
+              <p> 
+                <strong> {{b.title | titlecase }} </strong> <br/>
+                <em> {{b.duedate | date : "EEE, MMM d, y"}} </em> <br/>
+              </p>
+              <a (click)="onViewCard(b)" style="color:#fff"> View Card </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 float">
+      <div class="drag-container">
+        <div class="section-heading">In Process</div>
+          <div cdkDropList #InProcess="cdkDropList" [cdkDropListData]="inProcess"
+            [cdkDropListConnectedTo]="[Backlog, Review, Completed]" class="item-list" 
+            (cdkDropListDropped)="onDrop($event)">
+            <div class="item-box" *ngFor="let ip of inProcess" cdkDrag>
+              <p> <strong> {{ip.title | titlecase }} </strong> <br/>
+                <em> {{ip.duedate | date : "EEE, MMM d, y"}} </em>
+              </p>
+              <a (click)="onViewCard(ip)" style="color:#fff"> View Card </a>
+            </div>
+          </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 float">
+      <div class="drag-container">
+        <div class="section-heading">Review</div>
+          <div cdkDropList #Review="cdkDropList" [cdkDropListData]="review"
+            [cdkDropListConnectedTo]="[Backlog, InProcess, Completed]" class="item-list" (cdkDropListDropped)="onDrop($event)">
+            <div class="item-box" *ngFor="let r of review" cdkDrag>
+              <p> <strong> {{r.title | titlecase }} </strong> <br/>
+                <em> {{r.duedate | date : "EEE, MMM d, y"}} </em>
+              </p>  
+              <a (click)="onViewCard(r)" style="color:#fff"> View Card </a>
+            </div>
+          </div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 float">
+      <div class="drag-container">
+        <div class="section-heading">Completed</div>
+          <div cdkDropList #Completed="cdkDropList" [cdkDropListData]="completed"
+            [cdkDropListConnectedTo]="[Backlog, InProcess, Review]" class="item-list" (cdkDropListDropped)="onDrop($event)">
+            <div class="completed item-box" *ngFor="let c of completed" cdkDrag>
+              <p> <strong> {{c.title | titlecase }} </strong> <br/>
+                <em> {{c.duedate | date : "EEE, MMM d, y" }} </em>
+              </p>
+              <a (click)="onViewCard(c)" style="color:green; border:1px solid rgb(11, 83, 11);  background-color: #fff;"> View Card </a>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row justify-content-md-center padding" style="margin-top:50px" *ngIf="(openTask && !viewCard)">
+  <div class="col-md-4 col-sm-12 padding">
+    <form [formGroup]="addTask" (ngSubmit)="onAddTask(addTask)">
+      <div class="col-md-12 padding">
+        <input formControlName = "title" type="text" class="form-control" placeholder="Title">
+        <div *ngIf="submitted && f.title.errors" class="error">
+          <span *ngIf="f.title.errors.required"> Title is required </span>
+          <span *ngIf="f.title.errors.minlength"> Minimum length is 4 </span>
+        </div>
+      </div>
+      <div class="col-md-12 padding">
+        <div class="form-group padding">
+          <textarea formControlName = "description" class="form-control" rows="5" [maxlength]="maxChars" [(ngModel)]="messageText" placeholder="Description"></textarea>
+          <div *ngIf="submitted && f.description.errors" class="error">
+            <span *ngIf="f.description.errors.required"> Description is required </span>
+          </div>
+          <span class="description"> {{maxChars - messageText.length}} </span>
+        </div>
+        <div class="col-md-12 padding">
+            <input formControlName = "duedate" type="text" placeholder="Due Date" class="form-control" onfocus="(this.type='date')" onblur="(this.type='text')"/>
+            <div *ngIf="submitted && f.duedate .errors" class="error">
+              <span *ngIf="f.duedate .errors.required"> Due date is required </span>
+            </div>
+        </div>
+      </div>
+      <div class="row padding">
+        <div class="col-md-6" style="padding-left:0">
+          <input type="submit" class="form-control btn-primary" value="Submit">
+        </div>
+        <div class="col-md-6" style="padding-right:0">
+          <button class="form-control btn-danger" (click)="closeTask()"> Cancel </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="row justify-content-md-center padding" style="margin-top:50px" *ngIf="viewCard">
+  <div class="col-md-4 col-sm-12 padding viewCard">
+    <span> <u>Card ID</u> : {{viewCardItem.id }} </span>
+    <h3> {{viewCardItem.title | titlecase}} </h3>
+    <p> <u> Description</u> : <br/> {{viewCardItem.description | titlecase}} </p>
+    <em> <u>Due Date</u> : {{viewCardItem.duedate | date : "EEE, MMM d, y" }} </em>
+    <a style="color:#fff" (click)="closeView()"> Back </a>
+  </div>
+</div>

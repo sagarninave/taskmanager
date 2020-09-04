@@ -1,0 +1,132 @@
+.container{
+  margin-top: 20px;
+}
+
+.section-heading {
+  padding: 5px 10px;
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.float{
+  float: left;
+  margin:0;
+  padding:0
+}
+
+.green{
+  background-color: green;
+}
+
+.padding{
+  padding:0;
+  margin:0;
+}
+
+input[type="text"], input[type="date"], textarea{
+  margin-bottom:15px;
+}
+
+.description{
+  color:#636e72;
+  font-weight: bold;
+  float:right;
+  margin-bottom:15px;
+}
+
+.error{
+  color:red;
+  margin-bottom:15px
+}
+
+a{
+  background-color: #636e72;
+  color: #fff;
+  text-align:center;
+  padding:5px 8px;
+  margin-top:10px;
+  float:right;
+  border-radius: 5px;
+}
+
+a:hover{
+  background-color: #475155;
+  color: #fff;
+  text-decoration:none;
+  cursor: pointer;
+}
+
+.viewCard{
+  border:1px solid #636e72;
+  border-radius:5px;
+  padding:10px;
+  margin-bottom: 50px;
+}
+
+form{
+  border:1px solid #636e72;
+  padding: 20px;
+  box-sizing: border-box; 
+  top:10px;
+  position: relative;
+  border-radius:5px;
+  margin-bottom: 40px;
+}
+
+.drag-container {
+  margin: 10px;
+  vertical-align: top;
+  background-color: #E9ECEF;
+  padding: 15px;
+  border-radius: 5px;
+}
+
+.item-list {
+  min-height: 60px;
+  border-radius: 4px;
+  display: block;
+  min-height:200px;
+  height:auto;
+}
+
+.item-box {
+  padding: 10px 20px 2px;
+  border: solid 1px #ccc;
+  margin-bottom: 5px;
+  color: rgba(0, 0, 0, 0.87);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  cursor: move;
+  background: white;
+  font-size: 14px;
+  border-radius: 5px;
+}
+
+.completed{
+  color:#fff;
+  background-color: green;
+}
+
+.cdk-drag-preview {
+  box-sizing: border-box;
+  border-radius: 4px;
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+              0 8px 10px 1px rgba(0, 0, 0, 0.14),
+              0 3px 14px 2px rgba(0, 0, 0, 0.12);
+  border-radius: 20px;
+}
+
+.cdk-drag-placeholder {
+  opacity: 0;
+}
+
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.item-list.cdk-drop-list-dragging .item-box:not(.cdk-drag-placeholder) {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
